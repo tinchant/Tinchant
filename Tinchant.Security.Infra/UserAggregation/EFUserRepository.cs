@@ -1,4 +1,5 @@
-﻿using Tinchant.Security.Domain.UserAggregation;
+﻿using Microsoft.EntityFrameworkCore;
+using Tinchant.Security.Domain.UserAggregation;
 
 namespace Tinchant.Security.Infra.UserAggregation
 {
@@ -13,6 +14,11 @@ namespace Tinchant.Security.Infra.UserAggregation
         public async Task AddAsync(User user)
         {
             await _dbContext.Users.AddAsync(user);
+        }
+
+        public async Task<bool> AnyNameAsync(string name)
+        {
+            return await _dbContext.Users.AnyAsync(u => u.Name == name);
         }
     }
 }
