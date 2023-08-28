@@ -1,3 +1,4 @@
+using Tinchant.Security.Infra.UserAggregation;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +8,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+builder.Services.AddUserAggregation(builder.Configuration.GetConnectionString("UserAggregation")!);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

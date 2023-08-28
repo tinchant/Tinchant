@@ -12,7 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Tinchant.Security.Domain\Tinchant.Security.Domain.csproj" />
+    <ProjectReference Include="..\Tinchant.Security.Infra\Tinchant.Security.Infra.csproj" />
   </ItemGroup>
 
 </Project>
