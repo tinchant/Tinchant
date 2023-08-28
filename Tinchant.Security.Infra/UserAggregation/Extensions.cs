@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Tinchant.Security.Domain.UserAggregation;
 
@@ -16,6 +17,7 @@ namespace Tinchant.Security.Infra.UserAggregation
         }
         public static void AddUserAggregation(this IServiceCollection services, string connectionString, RegistrationServiceType registrationServiceType = RegistrationServiceType.BCrypt, RepositoryType repositoryType = RepositoryType.EF)
         {
+            services.AddScoped<IValidator<IUserRegistration>, UserRegistrationSpecification>();
             services.AddDbContext<EFUserAggregationUoW>(options => options.UseSqlServer(connectionString));
             switch (registrationServiceType)
             {

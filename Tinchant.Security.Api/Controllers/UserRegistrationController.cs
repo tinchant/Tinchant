@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Tinchant.Security.Api.Models;
 using Tinchant.Security.Domain.UserAggregation;
 
@@ -12,10 +13,11 @@ namespace Tinchant.Security.Api.Controllers
     {        
         // POST api/<RegistrationController>
         [HttpPost]
-        public async Task<ActionResult<User>> Post([FromBody] UserRegistrationRequest request, [FromServices]IUserRepository userRepository, [FromServices]IUserAggregationUoW userAggregationUoW, [FromServices]IRegistrationService registrationService)
+        public async Task<ActionResult<User>> Post([FromBody] UserRegistrationRequest request, [FromServices]IUserRepository userRepository, [FromServices]IUserAggregationUoW userAggregationUoW, [FromServices]IRegistrationService registrationService, [FromServices]IValidator<IUserRegistration> validator)
         {
-            if(!ModelState.IsValid) 
-                return BadRequest(ModelState);
+            var validation = await validator.ValidateAsync(request);
+            if(!validation.IsValid) 
+                return BadRequest(validation.Errors);
 
             var user = new User(request, registrationService);
             await userRepository.AddAsync(user);
